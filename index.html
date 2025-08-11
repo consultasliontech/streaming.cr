@@ -3,599 +3,863 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lion Tech Solutions - Servicios de Streaming Premium</title>
+    <title>Lion Tech Solutions - Soluciones Digitales</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Confetti.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Arial', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            position: relative;
+            font-family: 'Inter', sans-serif;
         }
-
-        body::before {
-            content: '';
+        /* Simple transition for view switching */
+        .view {
+            transition: opacity 0.3s ease-in-out;
+        }
+        #loader, #geminiLoader {
+            border-top-color: #3b82f6; /* Blue accent for loader */
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        /* Animation for product cards */
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 20px 5px rgba(59, 130, 246, 0.1);
+            }
+        }
+        .animate-pulse-glow {
+            animation: pulse-glow 3s infinite;
+        }
+        #background-video {
             position: fixed;
-            top: 0;
-            left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><defs><pattern id="streaming" patternUnits="userSpaceOnUse" width="60" height="60"><rect width="60" height="60" fill="%23000014" opacity="0.3"/><circle cx="10" cy="10" r="2" fill="%23ffd700" opacity="0.2"/><circle cx="30" cy="30" r="3" fill="%23ff6b6b" opacity="0.1"/><circle cx="50" cy="15" r="1.5" fill="%2300d4ff" opacity="0.2"/><rect x="20" y="40" width="8" height="8" fill="%23ff4757" opacity="0.1"/><rect x="40" y="5" width="6" height="6" fill="%23ffd700" opacity="0.15"/></pattern></defs><rect width="100%" height="100%" fill="url(%23streaming)"/></svg>') repeat;
-            opacity: 0.1;
-            z-index: -1;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -100;
+            object-fit: cover;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header */
-        header {
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(10px);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #ffd700;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .logo-text {
-            background: linear-gradient(45deg, #ffd700, #ffb347);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: #ffd700;
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            text-align: center;
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" style="stop-color:%23ff6b6b;stop-opacity:0.1"/><stop offset="100%" style="stop-color:%23667eea;stop-opacity:0.3"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23a)"/></svg>') center/cover;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
-            animation: slideInUp 1s ease-out;
-        }
-
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+        /* Fire effect animation for the discount button */
+        @keyframes fire-pulse {
+            50% {
+                box-shadow: 0 0 25px 5px rgba(234, 88, 12, 0.7);
             }
         }
-
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-            animation: slideInUp 1s ease-out 0.3s both;
+        .animate-fire-pulse {
+            animation: fire-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
-
-        .cta-button {
-            display: inline-block;
-            padding: 15px 40px;
-            background: linear-gradient(45deg, #ffd700, #ffb347);
-            color: #000;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
-            animation: slideInUp 1s ease-out 0.6s both;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(255, 215, 0, 0.5);
-        }
-
-        /* Services Section */
-        .services {
-            padding: 100px 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-        }
-
-        .services h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: #333;
-            position: relative;
-        }
-
-        .services h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(45deg, #ffd700, #ffb347);
-            border-radius: 2px;
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .service-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .service-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(45deg, #ffd700, #ffb347);
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-        }
-
-        .service-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: #ffd700;
-        }
-
-        .service-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #333;
-        }
-
-        .service-card p {
-            color: #666;
-            margin-bottom: 1.5rem;
-        }
-
-        .price {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #ffd700;
-            margin-bottom: 1rem;
-        }
-
-        .contact-btn {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .contact-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        /* Features Section */
-        .features {
-            padding: 100px 0;
-            background: rgba(0, 0, 0, 0.9);
-            color: white;
-        }
-
-        .features h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-
-        .feature-item {
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: #ffd700;
-        }
-
-        /* Contact Section */
-        .contact {
-            padding: 100px 0;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: white;
-            text-align: center;
-        }
-
-        .contact h2 {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .contact-info {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            flex-wrap: wrap;
-            margin-top: 3rem;
-        }
-
-        .contact-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 2rem;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .contact-item:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Footer */
-        footer {
-            background: #000;
-            color: white;
-            text-align: center;
-            padding: 2rem 0;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .nav-links {
-                display: none;
-            }
-            
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .contact-info {
-                flex-direction: column;
-                gap: 1rem;
+        /* Fire effect for text */
+        @keyframes fire-text-glow {
+            50% {
+                text-shadow: 0 0 15px rgba(251, 191, 36, 0.8), 0 0 5px rgba(234, 88, 12, 0.6);
             }
         }
-
-        /* Animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeInUp 1s ease-out forwards;
-        }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .animate-fire-text {
+            animation: fire-text-glow 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
     </style>
 </head>
-<body>
-    <header>
-        <nav class="container">
-            <div class="logo">
-                <div class="logo-text">Lion Tech Solutions</div>
-            </div>
-            <ul class="nav-links">
-                <li><a href="#inicio">Inicio</a></li>
-                <li><a href="#servicios">Servicios</a></li>
-                <li><a href="#contacto">Contacto</a></li>
-            </ul>
-        </nav>
-    </header>
+<body class="bg-gray-900 text-gray-200">
 
-    <section class="hero" id="inicio">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Lion Tech Solutions</h1>
-                <p>Más que una Empresa - Servicios de Streaming Premium</p>
-                <p>Accede a todas tus plataformas favoritas con la mejor calidad y precio</p>
-                <a href="#servicios" class="cta-button">Ver Servicios</a>
-            </div>
-        </div>
-    </section>
+    <video autoplay loop muted playsinline id="background-video">
+        <source src="https://klgmrtkgaayyhzdwnclt.supabase.co/storage/v1/object/public/manu12/Cielo%20estrellado%20sin%20copyright.mp4" type="video/mp4">
+        Tu navegador no soporta videos HTML5.
+    </video>
+    <div class="fixed inset-0 bg-black opacity-60 z-[-50]"></div>
+    
+    <!-- Audio Player -->
+    <audio id="background-music" loop>
+        <source src="https://klgmrtkgaayyhzdwnclt.supabase.co/storage/v1/object/public/manu12/space-ambient-music.mp3" type="audio/mpeg">
+    </audio>
 
-    <section class="services" id="servicios">
-        <div class="container">
-            <h2>Nuestros Servicios</h2>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">🎬</div>
-                    <h3>Netflix</h3>
-                    <p>Disfruta de miles de series y películas en alta calidad</p>
-                    <div class="price">Perfil: ₡2,000/mes • Personal: ₡4,800/mes</div>
-                    <small style="color: #666;">Después del primer mes: ₡2,500</small>
-                    <br><br>
-                    <a href="#contacto" class="contact-btn">Contactar</a>
-                </div>
+    <!-- Music Toggle Button -->
+    <button id="music-toggle" class="fixed bottom-4 right-4 z-[100] bg-black p-3 rounded-full text-white hover:bg-gray-800 transition-colors">
+        <svg id="icon-muted" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" clip-rule="evenodd" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+        </svg>
+        <svg id="icon-playing" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+        </svg>
+    </button>
 
-                <div class="service-card">
-                    <div class="service-icon">🏰</div>
-                    <h3>Disney+</h3>
-                    <p>Todo el contenido de Disney, Marvel, Star Wars y más</p>
-                    <div class="price">Perfil: ₡2,000/mes • Personal: ₡4,800/mes</div>
-                    <small style="color: #666;">Después del primer mes: ₡2,500</small>
-                    <br><br>
-                    <a href="#contacto" class="contact-btn">Contactar</a>
-                </div>
+    <!-- Thank You Toast -->
+    <div id="toast-message" class="fixed top-5 right-5 bg-green-600 text-white py-2 px-4 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300 z-[110]">
+        ¡Gracias por tu interés! Redirigiendo a WhatsApp...
+    </div>
 
-                <div class="service-card">
-                    <div class="service-icon">🎭</div>
-                    <h3>HBO Max</h3>
-                    <p>Las mejores series y películas exclusivas</p>
-                    <div class="price">Perfil: ₡2,000/mes • Personal: ₡4,800/mes</div>
-                    <small style="color: #666;">Después del primer mes: ₡2,500</small>
-                    <br><br>
-                    <a href="#contacto" class="contact-btn">Contactar</a>
-                </div>
 
-                <div class="service-card">
-                    <div class="service-icon">🚀</div>
-                    <h3>Paramount+</h3>
-                    <p>Contenido exclusivo y películas de estreno</p>
-                    <div class="price">Perfil: ₡2,000/mes • Personal: ₡4,800/mes</div>
-                    <small style="color: #666;">Después del primer mes: ₡2,500</small>
-                    <br><br>
-                    <a href="#contacto" class="contact-btn">Contactar</a>
-                </div>
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, addDoc, doc, updateDoc, deleteDoc, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        
+        // --- CONFIGURATION ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyAo7Ic5G5Y-BX1sy3QI_c7xxvtUHMmKiK0",
+            authDomain: "streaming-web-e645d.firebaseapp.com",
+            projectId: "streaming-web-e645d",
+            storageBucket: "streaming-web-e645d.firebasestorage.app",
+            messagingSenderId: "474770009460",
+            appId: "1:474770009460:web:efeba58f4cee95a22a9021",
+            measurementId: "G-B3D9GP845Q"
+        };
+        const appId = "streaming-web-e645d"; // Use the projectId from your configuration
 
-                <div class="service-card">
-                    <div class="service-icon">📦</div>
-                    <h3>Prime Video</h3>
-                    <p>Películas, series y contenido original de Amazon</p>
-                    <div class="price">Perfil: ₡2,000/mes • Personal: ₡4,800/mes</div>
-                    <small style="color: #666;">Después del primer mes: ₡2,500</small>
-                    <br><br>
-                    <a href="#contacto" class="contact-btn">Contactar</a>
-                </div>
+        // --- INITIALIZATION ---
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        setLogLevel('debug');
 
-                <div class="service-card">
-                    <div class="service-icon">🎵</div>
-                    <h3>Spotify Premium</h3>
-                    <p>Música sin límites y sin anuncios</p>
-                    <div class="price">₡5,500 por 3 meses</div>
-                    <a href="#contacto" class="contact-btn">Contactar</a>
-                </div>
+        // --- DOM ELEMENTS ---
+        const publicView = document.getElementById('publicView');
+        const adminView = document.getElementById('adminView');
+        const productsGrid = document.getElementById('productsGrid');
+        const noResults = document.getElementById('noResults');
+        const searchInput = document.getElementById('searchInput');
+        const adminProductsList = document.getElementById('adminProductsList');
+        const productForm = document.getElementById('productForm');
+        const formTitle = document.getElementById('formTitle');
+        const productIdInput = document.getElementById('productId');
+        const cancelButton = document.getElementById('cancelButton');
+        const formLoader = document.getElementById('formLoader');
+        const saveButton = document.getElementById('saveButton');
+        const settingsButton = document.getElementById('settingsButton');
+        const passwordModal = document.getElementById('passwordModal');
+        const passwordForm = document.getElementById('passwordForm');
+        const passwordInput = document.getElementById('passwordInput');
+        const passwordError = document.getElementById('passwordError');
+        const closeModalButton = document.getElementById('closeModalButton');
+        const imageModal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const closeImageModal = document.getElementById('closeImageModal');
+        const generateDescButton = document.getElementById('generateDescButton');
+        const geminiLoader = document.getElementById('geminiLoader');
+        const serviceNameInput = document.getElementById('name');
+        const descriptionTextarea = document.getElementById('description');
+        const authErrorModal = document.getElementById('authErrorModal');
+        const closeAuthErrorModal = document.getElementById('closeAuthErrorModal');
+        const firestoreRulesModal = document.getElementById('firestoreRulesModal');
+        const closeRulesModal = document.getElementById('closeRulesModal');
+        const firestoreWriteRulesModal = document.getElementById('firestoreWriteRulesModal');
+        const closeWriteRulesModal = document.getElementById('closeWriteRulesModal');
+        const musicToggle = document.getElementById('music-toggle');
+        const backgroundMusic = document.getElementById('background-music');
+        const iconMuted = document.getElementById('icon-muted');
+        const iconPlaying = document.getElementById('icon-playing');
+        const discountButton = document.getElementById('discountButton');
+        const discountModal = document.getElementById('discountModal');
+        const closeDiscountModal = document.getElementById('closeDiscountModal');
+        const openScheduleButton = document.getElementById('openScheduleButton');
+        const scheduleModal = document.getElementById('scheduleModal');
+        const closeScheduleModal = document.getElementById('closeScheduleModal');
+        const statusIndicator = document.getElementById('statusIndicator');
+        const descriptionModal = document.getElementById('descriptionModal');
+        const closeDescriptionModal = document.getElementById('closeDescriptionModal');
+        const modalProductName = document.getElementById('modalProductName');
+        const modalProductImage = document.getElementById('modalProductImage');
+        const modalProductDescription = document.getElementById('modalProductDescription');
+        const modalWhatsAppButton = document.getElementById('modalWhatsAppButton');
+        const toastMessage = document.getElementById('toast-message');
 
-                <div class="service-card">
-                    <div class="service-icon">📺</div>
-                    <h3>YouTube Premium</h3>
-                    <p>Videos sin anuncios y YouTube Music incluido</p>
-                    <div class="price">₡5,500 por 3 meses</div>
-                    <a href="#contacto" class="contact-btn">Contactar</a>
-                </div>
 
-                <div class="service-card">
-                    <div class="service-icon">🎌</div>
-                    <h3>Crunchyroll</h3>
-                    <p>El mejor anime y manga en streaming</p>
-                    <div class="price">Perfil: ₡1,500/mes • Personal: ₡2,400/mes</div>
-                    <a href="#contacto" class="contact-btn">Contactar</a>
-                </div>
+        let allProducts = []; // Local cache for searching
+        let isAppInitialized = false;
 
-                <div class="service-card">
-                    <div class="service-icon">🍎</div>
-                    <h3>Apple TV+</h3>
-                    <p>Contenido original de Apple en alta calidad</p>
-                    <div class="price">₡2,500/mes</div>
-                    <a href="#contacto" class="contact-btn">Contactar</a>
-                </div>
+        // --- ROUTING ---
+        function handleRouteChange() {
+            switch(window.location.hash) {
+                case '#admin':
+                    publicView.classList.add('hidden');
+                    adminView.classList.remove('hidden');
+                    break;
+                default:
+                    publicView.classList.remove('hidden');
+                    adminView.classList.add('hidden');
+            }
+        }
 
-                <div class="service-card">
-                    <div class="service-icon">📡</div>
-                    <h3>IPTV & Más</h3>
-                    <p>Acceso a canales en vivo y contenido adicional<br>
-                    <small>VIX+, Universal+, OnlyFans, Flujo TV, SMASTER PRO</small></p>
-                    <div class="price">₡2,800/mes</div>
-                    <a href="#contacto" class="contact-btn">Contactar</a>
-                </div>
-            </div>
-        </div>
-    </section>
+        // Setup routing listeners immediately on script load
+        window.addEventListener('hashchange', handleRouteChange);
+        document.addEventListener('DOMContentLoaded', handleRouteChange);
 
-    <section class="features">
-        <div class="container">
-            <h2>¿Por qué elegirnos?</h2>
-            <div class="features-grid">
-                <div class="feature-item">
-                    <div class="feature-icon">⚡</div>
-                    <h3>Activación Inmediata</h3>
-                    <p>Acceso instantáneo a tu servicio favorito</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">🔒</div>
-                    <h3>100% Seguro</h3>
-                    <p>Transacciones seguras y datos protegidos</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">💰</div>
-                    <h3>Mejores Precios</h3>
-                    <p>Los precios más competitivos del mercado</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">🎯</div>
-                    <h3>Calidad Premium</h3>
-                    <p>Máxima calidad de imagen y sonido</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <section class="contact" id="contacto">
-        <div class="container">
-            <h2>Contacto</h2>
-            <p>¿Listo para comenzar? Contáctanos y activa tu servicio hoy mismo</p>
-            <div class="contact-info">
-                <div class="contact-item">
-                    <div class="feature-icon">📱</div>
-                    <h3>WhatsApp</h3>
-                    <p>+506 7028 5433</p>
-                </div>
-                <div class="contact-item">
-                    <div class="feature-icon">📧</div>
-                    <h3>Email</h3>
-                    <p>soporteliontechsolutionsfc@gmail.com</p>
-                </div>
-                <div class="contact-item">
-                    <div class="feature-icon">📸</div>
-                    <h3>Instagram</h3>
-                    <p>@liontech_solutionscr</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Lion Tech Solutions. Todos los derechos reservados.</p>
-        </div>
-    </footer>
-
-    <script>
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // Header scroll effect
-        window.addEventListener('scroll', function() {
-            const header = document.querySelector('header');
-            if (window.scrollY > 100) {
-                header.style.background = 'rgba(0, 0, 0, 0.95)';
+        // --- AUTHENTICATION ---
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                if (!isAppInitialized) {
+                    initializeAppLogic(user.uid);
+                    isAppInitialized = true;
+                }
             } else {
-                header.style.background = 'rgba(0, 0, 0, 0.9)';
+                try {
+                    await signInAnonymously(auth);
+                } catch (error) {
+                    console.error("Error during sign-in:", error);
+                    if (error.code === 'auth/configuration-not-found') {
+                        authErrorModal.classList.remove('hidden');
+                    }
+                }
             }
         });
 
-        // Intersection Observer for animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+        // --- DATA HANDLING ---
+        function listenForProducts(userId) {
+            const productsCollection = collection(db, `artifacts/${appId}/public/data/products`);
+            onSnapshot(productsCollection, (snapshot) => {
+                allProducts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                renderProducts(allProducts);
+                renderAdminList(allProducts);
+                searchProducts();
+            }, (error) => {
+                console.error("Error fetching products: ", error);
+                if (error.code === 'permission-denied') {
+                    firestoreRulesModal.classList.remove('hidden');
                 }
             });
-        }, observerOptions);
+        }
 
-        // Observe service cards
-        document.querySelectorAll('.service-card').forEach(card => {
-            observer.observe(card);
-        });
+        // --- GEMINI API FUNCTION ---
+        async function generateDescriptionWithGemini(serviceName) {
+            geminiLoader.classList.remove('hidden');
+            generateDescButton.disabled = true;
+
+            const prompt = `Eres un experto en marketing digital para una empresa de tecnología en Costa Rica llamada 'Lion Tech Solutions'. Escribe una descripción de producto atractiva y profesional para un servicio llamado '${serviceName}'. La descripción debe ser concisa, de unas 25-40 palabras, y destacar los beneficios para el cliente. El tono debe ser profesional y confiable.`;
+            
+            const payload = {
+                contents: [{ role: "user", parts: [{ text: prompt }] }]
+            };
+            const apiKey = firebaseConfig.apiKey; // Use the API key from your config
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+            try {
+                let response;
+                let delay = 1000;
+                for (let i = 0; i < 5; i++) {
+                    response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (response.ok) break;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    delay *= 2;
+                }
+
+                if (!response.ok) {
+                    throw new Error(`API request failed with status ${response.status}`);
+                }
+
+                const result = await response.json();
+                if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    descriptionTextarea.value = text.trim();
+                } else {
+                    console.error("Unexpected API response structure:", result);
+                    descriptionTextarea.value = "No se pudo generar una descripción. Por favor, inténtalo de nuevo.";
+                }
+            } catch (error) {
+                console.error("Error calling Gemini API:", error);
+                descriptionTextarea.value = "Error al contactar la IA. Verifica la conexión y vuelve a intentarlo.";
+            } finally {
+                geminiLoader.classList.add('hidden');
+                generateDescButton.disabled = false;
+            }
+        }
+
+        // --- RENDERING ---
+        function renderProducts(productsToRender) {
+            if (productsToRender.length === 0 && searchInput.value === '') {
+                productsGrid.innerHTML = '<p class="text-center col-span-full text-gray-400">No hay servicios disponibles en este momento.</p>';
+                noResults.classList.add('hidden');
+                return;
+            }
+            if (productsToRender.length === 0 && searchInput.value !== '') {
+                productsGrid.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            }
+            
+            noResults.classList.add('hidden');
+            productsGrid.innerHTML = productsToRender.map(product => {
+                const imageUrl = product.imageUrl || 'https://placehold.co/600x400/1f2937/ffffff?text=Servicio';
+                
+                let stockInfo;
+                if (product.useRandomStock) {
+                    stockInfo = `<span class="inline-block bg-green-800 text-green-200 text-xs font-semibold px-2.5 py-0.5 rounded-full">Disponibles: ${Math.floor(Math.random() * 7) + 1}</span>`;
+                } else {
+                    const fixedStock = product.fixedStock || 0;
+                    if (fixedStock > 0) {
+                        stockInfo = `<span class="inline-block bg-green-800 text-green-200 text-xs font-semibold px-2.5 py-0.5 rounded-full">Disponibles: ${fixedStock}</span>`;
+                    } else {
+                        stockInfo = `<span class="inline-block bg-red-800 text-red-200 text-xs font-semibold px-2.5 py-0.5 rounded-full">Agotado</span>`;
+                    }
+                }
+                
+                const isLowStock = !product.useRandomStock && (product.fixedStock || 0) > 0 && (product.fixedStock || 0) <= 10;
+                const titleContent = isLowStock
+                    ? `<span class="text-yellow-400 text-sm block animate-pulse">¡ÚLTIMAS UNIDADES!</span> ${product.name}`
+                    : product.name;
+
+                return `
+                <div class="product-card bg-black rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-1 transition-all duration-300 flex flex-col border border-gray-700 animate-pulse-glow">
+                    <div class="relative group cursor-pointer view-image-btn" data-img-src="${imageUrl}">
+                        <img src="${imageUrl}" alt="Imagen de ${product.name}" class="w-full h-48 object-contain bg-gray-900" onerror="this.onerror=null;this.src='https://placehold.co/600x400/ef4444/ffffff?text=Error+de+Imagen';">
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center">
+                            <svg class="w-12 h-12 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <div class="flex items-baseline justify-between gap-3 mb-2">
+                            <span class="inline-block bg-blue-900 text-blue-200 text-xs font-semibold px-2.5 py-0.5 rounded-full">${product.category || 'General'}</span>
+                            ${stockInfo}
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">${titleContent}</h3>
+                        <p class="text-gray-400 text-sm mb-4 flex-grow truncate">${product.description}</p>
+                        <div class="product-footer bg-gray-900 -m-6 mt-4 p-4 border-t border-gray-700">
+                            <div class="flex justify-between items-center">
+                                <button data-id="${product.id}" class="view-description-btn text-blue-400 hover:text-blue-300 text-sm font-semibold">Ver Más</button>
+                                <a href="https://wa.me/50670285433?text=${encodeURIComponent(`¡Hola! Me interesa el servicio "${product.name}"`)}" target="_blank" class="whatsapp-btn inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 text-sm">
+                                    <span>Consultar</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function renderAdminList(products) {
+             adminProductsList.innerHTML = products.map(p => {
+                const stockDisplay = p.useRandomStock ? 'Azar Activado' : `Fijo: ${p.fixedStock || 0}`;
+                return `
+                <div class="bg-black p-4 rounded-lg shadow-sm flex items-center justify-between border border-gray-700">
+                    <div>
+                        <p class="font-bold text-white">${p.name}</p>
+                        <p class="text-sm text-gray-400">₡${(p.price || 0).toLocaleString('es-CR')} - Stock: ${stockDisplay}</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button data-id="${p.id}" class="edit-btn bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-md">Editar</button>
+                        <button data-id="${p.id}" class="delete-btn bg-red-600 hover:bg-red-700 text-white p-2 rounded-md">Eliminar</button>
+                    </div>
+                </div>`;
+             }).join('');
+        }
+
+        // --- FORM & CRUD LOGIC ---
+        function resetForm() {
+            productForm.reset();
+            productIdInput.value = '';
+            formTitle.textContent = 'Añadir Nuevo Servicio';
+            cancelButton.classList.add('hidden');
+        }
+
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            formLoader.classList.remove('hidden');
+            saveButton.disabled = true;
+
+            const formData = new FormData(e.target);
+            const productData = {
+                name: formData.get('name'),
+                description: formData.get('description'),
+                price: Number(formData.get('price')),
+                category: formData.get('category'),
+                imageUrl: formData.get('imageUrl'),
+                fixedStock: Number(formData.get('fixedStock')),
+                useRandomStock: formData.get('useRandomStock') === 'on',
+            };
+
+            const productId = productIdInput.value;
+            try {
+                if (productId) {
+                    const productRef = doc(db, `artifacts/${appId}/public/data/products`, productId);
+                    await updateDoc(productRef, productData);
+                } else {
+                    const productsCollection = collection(db, `artifacts/${appId}/public/data/products`);
+                    await addDoc(productsCollection, productData);
+                }
+                resetForm();
+            } catch (error) {
+                console.error("Error saving product:", error);
+                if (error.code === 'permission-denied') {
+                    firestoreWriteRulesModal.classList.remove('hidden');
+                }
+            } finally {
+                formLoader.classList.add('hidden');
+                saveButton.disabled = false;
+            }
+        }
+
+        function handleAdminListClick(e) {
+            const target = e.target;
+            const id = target.dataset.id;
+            if (!id) return;
+
+            if (target.classList.contains('edit-btn')) {
+                const product = allProducts.find(p => p.id === id);
+                if (product) {
+                    formTitle.textContent = 'Editar Servicio';
+                    productIdInput.value = product.id;
+                    productForm.name.value = product.name;
+                    productForm.description.value = product.description;
+                    productForm.price.value = product.price;
+                    productForm.category.value = product.category;
+                    productForm.imageUrl.value = product.imageUrl || '';
+                    productForm.fixedStock.value = product.fixedStock || 0;
+                    productForm.useRandomStock.checked = product.useRandomStock || false;
+                    cancelButton.classList.remove('hidden');
+                    window.scrollTo(0, 0);
+                }
+            } else if (target.classList.contains('delete-btn')) {
+                if (confirm('¿Estás seguro de que quieres eliminar este producto?')) {
+                    const productRef = doc(db, `artifacts/${appId}/public/data/products`, id);
+                    deleteDoc(productRef).catch(error => console.error("Error deleting product:", error));
+                }
+            }
+        }
+        
+        // --- SEARCH ---
+        function searchProducts() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const filteredProducts = allProducts.filter(product =>
+                product.name.toLowerCase().includes(searchTerm) ||
+                (product.category && product.category.toLowerCase().includes(searchTerm)) ||
+                product.description.toLowerCase().includes(searchTerm)
+            );
+            renderProducts(filteredProducts);
+        }
+        
+        // --- APP INITIALIZATION ---
+        function initializeAppLogic(userId) {
+            // Event Listeners
+            searchInput.addEventListener('input', searchProducts);
+            productForm.addEventListener('submit', handleFormSubmit);
+            adminProductsList.addEventListener('click', handleAdminListClick);
+            cancelButton.addEventListener('click', resetForm);
+            
+            settingsButton.addEventListener('click', () => {
+                passwordModal.classList.remove('hidden');
+                passwordInput.focus();
+            });
+
+            closeModalButton.addEventListener('click', () => {
+                passwordModal.classList.add('hidden');
+                passwordError.classList.add('hidden');
+                passwordInput.value = '';
+            });
+
+            passwordForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (passwordInput.value === '2050') {
+                    window.location.hash = '#admin';
+                    passwordModal.classList.add('hidden');
+                    passwordInput.value = '';
+                    passwordError.classList.add('hidden');
+                } else {
+                    passwordError.classList.remove('hidden');
+                }
+            });
+
+            productsGrid.addEventListener('click', (e) => {
+                const viewImageBtn = e.target.closest('.view-image-btn');
+                const viewDescBtn = e.target.closest('.view-description-btn');
+
+                if (viewImageBtn) {
+                    const imgSrc = viewImageBtn.dataset.imgSrc;
+                    if (imgSrc) {
+                        modalImage.src = imgSrc;
+                        imageModal.classList.remove('hidden');
+                    }
+                } else if (viewDescBtn) {
+                    const productId = viewDescBtn.dataset.id;
+                    const product = allProducts.find(p => p.id === productId);
+                    if (product) {
+                        modalProductName.textContent = product.name;
+                        modalProductImage.src = product.imageUrl || 'https://placehold.co/600x400/1f2937/ffffff?text=Servicio';
+                        modalProductDescription.textContent = product.description;
+                        const whatsappLink = `https://wa.me/50670285433?text=${encodeURIComponent(`¡Hola! Me interesa el servicio "${product.name}"`)}`;
+                        modalWhatsAppButton.href = whatsappLink;
+                        descriptionModal.classList.remove('hidden');
+                    }
+                }
+            });
+
+            function closeImageModalHandler() {
+                imageModal.classList.add('hidden');
+                modalImage.src = ''; // Clear src to prevent showing old image briefly
+            }
+
+            closeImageModal.addEventListener('click', closeImageModalHandler);
+            imageModal.addEventListener('click', (e) => {
+                if (e.target.id === 'imageModal') {
+                    closeImageModalHandler();
+                }
+            });
+
+            closeDescriptionModal.addEventListener('click', () => {
+                descriptionModal.classList.add('hidden');
+            });
+
+            modalWhatsAppButton.addEventListener('click', (e) => {
+                e.preventDefault(); 
+                toastMessage.classList.remove('translate-x-full');
+                const url = e.currentTarget.href;
+                setTimeout(() => {
+                    window.open(url, '_blank');
+                    descriptionModal.classList.add('hidden');
+                    toastMessage.classList.add('translate-x-full');
+                }, 2000);
+            });
+
+            generateDescButton.addEventListener('click', () => {
+                const serviceName = serviceNameInput.value;
+                if (serviceName.trim()) {
+                    generateDescriptionWithGemini(serviceName);
+                } else {
+                    alert("Por favor, introduce un nombre de servicio primero.");
+                }
+            });
+
+            closeAuthErrorModal.addEventListener('click', () => {
+                authErrorModal.classList.add('hidden');
+            });
+
+            closeRulesModal.addEventListener('click', () => {
+                firestoreRulesModal.classList.add('hidden');
+            });
+            
+            closeWriteRulesModal.addEventListener('click', () => {
+                firestoreWriteRulesModal.classList.add('hidden');
+            });
+
+            // Music Toggle Logic
+            musicToggle.addEventListener('click', () => {
+                if (backgroundMusic.paused) {
+                    backgroundMusic.play();
+                    iconMuted.classList.add('hidden');
+                    iconPlaying.classList.remove('hidden');
+                } else {
+                    backgroundMusic.pause();
+                    iconMuted.classList.remove('hidden');
+                    iconPlaying.classList.add('hidden');
+                }
+            });
+
+            discountButton.addEventListener('click', () => {
+                confetti({
+                    particleCount: 150,
+                    spread: 90,
+                    origin: { y: 0.6 }
+                });
+                discountModal.classList.remove('hidden');
+            });
+
+            closeDiscountModal.addEventListener('click', () => {
+                discountModal.classList.add('hidden');
+            });
+
+            // Schedule Logic
+            function updateScheduleStatus() {
+                // Costa Rica is UTC-6
+                const now = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Costa_Rica"}));
+                const currentHour = now.getHours();
+                if (currentHour >= 8 && currentHour < 22) {
+                    statusIndicator.textContent = '¡Estamos abiertos!';
+                    statusIndicator.classList.remove('text-red-400');
+                    statusIndicator.classList.add('text-green-400');
+                } else {
+                    statusIndicator.textContent = 'Estamos cerrados';
+                    statusIndicator.classList.remove('text-green-400');
+                    statusIndicator.classList.add('text-red-400');
+                }
+            }
+
+            openScheduleButton.addEventListener('click', () => {
+                updateScheduleStatus();
+                scheduleModal.classList.remove('hidden');
+            });
+
+            closeScheduleModal.addEventListener('click', () => {
+                scheduleModal.classList.add('hidden');
+            });
+
+            listenForProducts(userId); // Initial data fetch
+        }
+
     </script>
+    
+    <!-- Auth Error Modal -->
+    <div id="authErrorModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-[100] hidden">
+        <div class="bg-red-900 p-8 rounded-lg shadow-xl w-full max-w-md border border-red-700 text-white">
+            <h3 class="text-xl font-bold mb-4">Error de Configuración de Firebase</h3>
+            <p class="mb-4">La página no se pudo conectar a la base de datos. Es muy probable que necesites activar el "Inicio de sesión anónimo" en tu proyecto de Firebase.</p>
+            <p class="text-sm text-red-200 mb-4"><b>Instrucciones:</b> Ve a tu Consola de Firebase → Authentication → Sign-in method → Activa "Anónimo".</p>
+            <button id="closeAuthErrorModal" class="w-full bg-red-600 hover:bg-red-700 font-bold py-2 px-4 rounded-md">Entendido</button>
+        </div>
+    </div>
+
+    <!-- Firestore Write Rules Error Modal -->
+    <div id="firestoreWriteRulesModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-[100] hidden">
+        <div class="bg-red-900 p-8 rounded-lg shadow-xl w-full max-w-lg border border-red-700 text-white">
+            <h3 class="text-xl font-bold mb-4">¡Acción Requerida! Permiso para Guardar Cambios</h3>
+            <p class="mb-4">No se pudo guardar el producto porque la base de datos no tiene permisos de escritura. Necesitas actualizar las reglas para permitir que el panel de administrador guarde los cambios.</p>
+            <p class="text-sm text-red-200 mb-2"><b>Instrucciones:</b></p>
+            <ol class="list-decimal list-inside text-sm space-y-1 mb-4">
+                <li>Ve a tu Consola de Firebase → Compilación → <b>Firestore Database</b>.</li>
+                <li>Haz clic en la pestaña <b>"Reglas"</b>.</li>
+                <li>Borra todo el texto y pega el siguiente código:</li>
+            </ol>
+            <pre class="bg-gray-800 p-3 rounded-md text-xs text-white overflow-x-auto mb-4"><code>rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /artifacts/{appId}/public/data/{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null; // Permite escribir si el usuario está autenticado (incluso anónimamente)
+    }
+  }
+}</code></pre>
+            <p class="text-sm text-red-200 mb-4">4. Haz clic en <b>"Publicar"</b> y luego intenta guardar el producto de nuevo.</p>
+            <button id="closeWriteRulesModal" class="w-full bg-red-600 hover:bg-red-700 font-bold py-2 px-4 rounded-md">Entendido</button>
+        </div>
+    </div>
+
+    <!-- Firestore Read Rules Error Modal -->
+    <div id="firestoreRulesModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-[100] hidden">
+        <div class="bg-red-900 p-8 rounded-lg shadow-xl w-full max-w-lg border border-red-700 text-white">
+            <h3 class="text-xl font-bold mb-4">¡Acción Requerida! Error de Permisos de Base de Datos</h3>
+            <p class="mb-4">La página no puede cargar los productos porque la base de datos no tiene los permisos correctos. Este es el último paso de la configuración.</p>
+            <p class="text-sm text-red-200 mb-2"><b>Instrucciones:</b></p>
+            <ol class="list-decimal list-inside text-sm space-y-1 mb-4">
+                <li>Ve a tu Consola de Firebase → Compilación → <b>Firestore Database</b>.</li>
+                <li>Haz clic en la pestaña <b>"Reglas"</b>.</li>
+                <li>Borra todo el texto y pega el siguiente código:</li>
+            </ol>
+            <pre class="bg-gray-800 p-3 rounded-md text-xs text-white overflow-x-auto mb-4"><code>rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /artifacts/{appId}/public/data/{document=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}</code></pre>
+            <p class="text-sm text-red-200 mb-4">4. Haz clic en <b>"Publicar"</b> y recarga esta página.</p>
+            <button id="closeRulesModal" class="w-full bg-red-600 hover:bg-red-700 font-bold py-2 px-4 rounded-md">Entendido</button>
+        </div>
+    </div>
+    
+    <!-- Password Modal -->
+    <div id="passwordModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-[100] hidden">
+        <div class="bg-black p-8 rounded-lg shadow-xl w-full max-w-sm border border-gray-700">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-white">Acceso de Administrador</h3>
+                <button id="closeModalButton" class="text-gray-400 hover:text-white">&times;</button>
+            </div>
+            <form id="passwordForm">
+                <label for="passwordInput" class="block text-sm font-medium text-gray-300 mb-2">Contraseña</label>
+                <input type="password" id="passwordInput" class="w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+                <p id="passwordError" class="text-red-500 text-sm mt-2 hidden">Contraseña incorrecta. Inténtalo de nuevo.</p>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mt-4">Entrar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Discount Modal -->
+    <div id="discountModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-[100] hidden">
+        <div class="bg-black p-8 rounded-lg shadow-xl w-full max-w-sm border border-gray-700 text-center">
+            <h3 class="text-2xl font-bold text-white mb-2">¡Premio Mayor!</h3>
+            <p class="text-yellow-400 text-3xl font-bold animate-pulse mb-4">Tu descuento es... ¡0%!</p>
+            <button id="closeDiscountModal" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mt-6">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Image Viewer Modal -->
+    <div id="imageModal" class="fixed inset-0 bg-gray-900 bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-[100] hidden p-4">
+        <div class="relative">
+            <button id="closeImageModal" class="absolute -top-4 -right-4 text-white bg-gray-800 rounded-full p-2 hover:bg-gray-700 z-10">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <img id="modalImage" src="" alt="Vista ampliada del producto" class="max-w-screen-lg max-h-[80vh] object-contain rounded-lg">
+        </div>
+    </div>
+    
+    <!-- Description Modal -->
+    <div id="descriptionModal" class="fixed inset-0 bg-gray-900 bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-[100] hidden p-4">
+        <div class="bg-black p-6 rounded-lg shadow-xl w-full max-w-lg border border-gray-700 relative">
+            <button id="closeDescriptionModal" class="absolute top-4 right-4 text-gray-400 hover:text-white">&times;</button>
+            <h3 id="modalProductName" class="text-2xl font-bold text-white mb-4"></h3>
+            <img id="modalProductImage" src="" alt="Imagen del producto" class="w-full h-64 object-contain rounded-md mb-4 bg-gray-900">
+            <p id="modalProductDescription" class="text-gray-300"></p>
+            <a id="modalWhatsAppButton" href="#" target="_blank" class="w-full mt-6 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-md text-center inline-block">
+                Comprar por WhatsApp
+            </a>
+        </div>
+    </div>
+    
+    <!-- Schedule Modal -->
+    <div id="scheduleModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-[100] hidden">
+        <div class="bg-black p-8 rounded-lg shadow-xl w-full max-w-sm border border-gray-700 text-center">
+            <h3 class="text-2xl font-bold text-white mb-4">Nuestro Horario</h3>
+            <p class="text-gray-300 text-lg">Lunes a Domingo</p>
+            <p class="text-gray-300 text-lg mb-4">8:00 AM - 10:00 PM</p>
+            <div id="statusIndicator" class="text-lg font-bold p-2 rounded-md"></div>
+            <button id="closeScheduleModal" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mt-6">Cerrar</button>
+        </div>
+    </div>
+
+
+    <!-- Public View -->
+    <div id="publicView" class="view relative z-10">
+        <header class="bg-black shadow-md sticky top-0 z-40 border-b border-gray-700">
+            <div class="container mx-auto px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <img src="https://klgmrtkgaayyhzdwnclt.supabase.co/storage/v1/object/public/manu12/LionTech%20Solutions.jpg" alt="Lion Tech Solutions Logo" class="h-20">
+                    <div class="flex items-center gap-4">
+                        <a href="https://drive.google.com/file/d/1DxhPjzMomcbh2ai-JBJCDcLnAOm1eqY7/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="text-sm font-medium text-yellow-400 hover:text-white transition-colors hidden md:block animate-fire-text">
+                            COMO USAR IPTV Y QUE OFRECE
+                        </a>
+                        <a href="https://www.instagram.com/liontech_solutionscr" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors">
+                            <img src="https://klgmrtkgaayyhzdwnclt.supabase.co/storage/v1/object/public/manu12/imagen_2025-08-10_044426691.png" alt="Instagram" class="h-6 w-6">
+                        </a>
+                        <a href="https://www.facebook.com/PauCr2" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors">
+                            <img src="https://klgmrtkgaayyhzdwnclt.supabase.co/storage/v1/object/public/manu12/imagen_2025-08-10_044516051.png" alt="Facebook" class="h-6 w-6">
+                        </a>
+                        <button id="settingsButton" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="container mx-auto px-6 py-8 md:py-12">
+             <!-- Announcement Banner -->
+            <div id="announcement-banner" class="bg-gradient-to-r from-yellow-500 to-orange-500 text-white p-4 text-center relative rounded-lg mb-8 shadow-lg">
+                <p class="font-bold text-gray-900">
+                    ¡OFERTA ESPECIAL! 
+                    <span class="font-normal">Contrata 3 meses y te damos el 4to mes GRATIS. Además, si 2 referidos tuyos compran, ¡tu próximo mes es GRATIS!</span>
+                </p>
+            </div>
+
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4">Todo lo que Necesitas, en un Solo Lugar</h2>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+                    <button id="discountButton" class="bg-gradient-to-r from-red-600 via-orange-500 to-yellow-400 text-white font-extrabold py-3 px-6 rounded-full transition-transform duration-300 animate-fire-pulse transform hover:scale-105">
+                        DESCUENTO SI ERES GUAPO
+                    </button>
+                    <button id="openScheduleButton" class="bg-gradient-to-r from-blue-600 via-cyan-500 to-green-400 text-white font-extrabold py-3 px-6 rounded-full transition-transform duration-300 animate-fire-pulse transform hover:scale-105">
+                        HORARIO DE TRABAJO
+                    </button>
+                </div>
+                <div class="relative max-w-lg mx-auto">
+                    <input type="text" class="w-full py-3 pl-5 pr-12 text-gray-200 bg-black border border-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Buscar servicios..." id="searchInput">
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="productsGrid">
+                <!-- Product cards will be dynamically inserted here -->
+            </div>
+            
+            <div class="text-center py-16 hidden" id="noResults">
+                <h3 class="mt-2 text-xl font-semibold text-white">No se encontraron servicios</h3>
+            </div>
+        </main>
+    </div>
+
+    <!-- Admin View -->
+    <div id="adminView" class="view hidden relative z-10">
+        <main class="container mx-auto px-6 py-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl font-bold text-white">Panel de Administración</h2>
+                <a href="#" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-md transition-colors">
+                    ← Retroceder
+                </a>
+            </div>
+            
+            <!-- Form Card -->
+            <div class="bg-black p-6 rounded-lg shadow-md mb-8 border border-gray-700">
+                <h3 id="formTitle" class="text-2xl font-bold text-white mb-4">Añadir Nuevo Servicio</h3>
+                <form id="productForm" class="space-y-4">
+                    <input type="hidden" id="productId">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-300">Nombre del Servicio</label>
+                        <input type="text" name="name" id="name" required class="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label for="description" class="block text-sm font-medium text-gray-300">Descripción</label>
+                        <div class="relative">
+                            <textarea name="description" id="description" rows="3" required class="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 pr-28"></textarea>
+                            <button type="button" id="generateDescButton" class="absolute top-2 right-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-md text-xs flex items-center gap-1">
+                                ✨ Generar
+                                <div id="geminiLoader" class="hidden w-4 h-4 border-2 border-white rounded-full loader"></div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="price" class="block text-sm font-medium text-gray-300">Precio (₡)</label>
+                            <input type="number" name="price" id="price" required class="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="category" class="block text-sm font-medium text-gray-300">Categoría</label>
+                            <input type="text" name="category" id="category" required class="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="imageUrl" class="block text-sm font-medium text-gray-300">URL de la Imagen</label>
+                        <input type="url" name="imageUrl" id="imageUrl" placeholder="https://ejemplo.com/imagen.png" class="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="fixedStock" class="block text-sm font-medium text-gray-300">Cantidad Fija</label>
+                            <input type="number" name="fixedStock" id="fixedStock" required class="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500" min="0" value="0">
+                        </div>
+                        <div class="flex items-end pb-1">
+                            <div class="flex items-center">
+                                <input type="checkbox" name="useRandomStock" id="useRandomStock" class="h-4 w-4 rounded bg-gray-700 border-gray-600 text-blue-600 focus:ring-blue-500">
+                                <label for="useRandomStock" class="ml-2 block text-sm text-gray-200">Usar Stock al Azar</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <button type="submit" id="saveButton" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">Guardar Servicio</button>
+                        <button type="button" id="cancelButton" class="hidden bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-md">Cancelar Edición</button>
+                        <div id="formLoader" class="hidden w-6 h-6 border-4 border-gray-600 rounded-full loader"></div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- List Card -->
+            <div class="bg-black p-6 rounded-lg shadow-md border border-gray-700">
+                <h3 class="text-2xl font-bold text-white mb-4">Servicios Existentes</h3>
+                <div id="adminProductsList" class="space-y-4">
+                    <!-- Admin product list will be dynamically inserted here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-black mt-16 border-t border-gray-700 relative z-10">
+        <div class="container mx-auto px-6 py-8 text-center">
+             <img src="https://klgmrtkgaayyhzdwnclt.supabase.co/storage/v1/object/public/manu12/LionTech%20Solutions.jpg" alt="Lion Tech Solutions Logo" class="h-16 mx-auto mb-4">
+            <p class="text-gray-500 text-sm mt-4">&copy; 2025 Lion Tech Solutions. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
 </body>
 </html>
